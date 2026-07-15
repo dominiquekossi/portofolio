@@ -1,0 +1,267 @@
+@import "tailwindcss";
+
+/* ---------------------------------------------------------------------
+   Design tokens exposed to Tailwind (colors + font families only —
+   everything else below is bespoke and deliberately outside Tailwind's
+   default scale).
+--------------------------------------------------------------------- */
+@theme {
+  --color-paper: #f2eee3;
+  --color-paper-deep: #e7dfcd;
+  --color-ink: #18150f;
+  --color-ink-soft: #565045;
+  --color-ink-faint: #8c8576;
+  --color-line: #d8cfba;
+  --color-accent: #a9752c;
+  --color-accent-deep: #7b551f;
+
+  --font-display: "Fraunces Variable", "Iowan Old Style", Georgia, serif;
+  --font-sans: "Archivo Variable", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ---------------------------------------------------------------------
+   Bespoke scale — fluid type, rhythm and grid. Not part of Tailwind's
+   theme on purpose: these values read as authored, not generated. Plain
+   custom properties don't participate in cascade layering, so they're
+   safe to leave outside @layer.
+--------------------------------------------------------------------- */
+:root {
+  color-scheme: light;
+
+  --edge: clamp(1.25rem, 1rem + 3vw, 3.5rem);
+  --container-max: 90rem;
+
+  --fs-display: clamp(3.4rem, 2.2rem + 8vw, 10rem);
+  --fs-h1: clamp(2.25rem, 1.6rem + 3.2vw, 4.5rem);
+  --fs-h2: clamp(1.5rem, 1.2rem + 1.4vw, 2.25rem);
+  --fs-lede: clamp(1.05rem, 0.95rem + 0.5vw, 1.4rem);
+  --fs-body: clamp(1rem, 0.94rem + 0.2vw, 1.125rem);
+  --fs-small: 0.9rem;
+  --fs-eyebrow: 0.78rem;
+
+  --ease-editorial: cubic-bezier(0.65, 0, 0.08, 1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/*
+ * Everything below is wrapped in Tailwind's own `base`/`components`
+ * layers (declared by `@import "tailwindcss"` above as
+ * `@layer theme, base, components, utilities;`). Cascade layers ignore
+ * source order and specificity across layers — unlayered CSS always
+ * beats layered CSS — so anything left unlayered here would silently
+ * defeat every Tailwind utility (hidden, md:block, opacity-0, …)
+ * applied alongside it. Layering these matches Tailwind's own
+ * base < components < utilities precedence, which is what lets a
+ * utility class win when it's meant to.
+ */
+@layer base {
+  * {
+    border-color: var(--color-line);
+  }
+
+  html {
+    background: var(--color-paper);
+  }
+
+  body {
+    background: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-size: var(--fs-body);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+
+  html.has-fine-pointer body {
+    cursor: none;
+  }
+
+  html.has-fine-pointer a,
+  html.has-fine-pointer button {
+    cursor: none;
+  }
+
+  ::selection {
+    background: var(--color-accent);
+    color: var(--color-paper);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+  }
+
+  /* Fixed paper-grain wash. Purely textural — a stand-in for the tooth
+     of uncoated paper, not a decorative "particles" effect. */
+  body::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    opacity: 0.045;
+    mix-blend-mode: multiply;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+
+  #root {
+    position: relative;
+    z-index: 0;
+  }
+}
+
+@layer components {
+  /* -----------------------------------------------------------------
+     Typography components
+  ----------------------------------------------------------------- */
+  .font-display-face {
+    font-family: var(--font-display);
+  }
+
+  .h-display {
+    font-family: var(--font-display);
+    font-weight: 470;
+    font-style: normal;
+    font-variation-settings: "opsz" 144, "WONK" 1, "SOFT" 0;
+    font-size: var(--fs-display);
+    line-height: 0.9;
+    letter-spacing: -0.02em;
+  }
+
+  .h-display em {
+    font-style: italic;
+    font-weight: 420;
+    color: var(--color-accent);
+  }
+
+  .h1 {
+    font-family: var(--font-display);
+    font-weight: 460;
+    font-variation-settings: "opsz" 72, "WONK" 0, "SOFT" 0;
+    font-size: var(--fs-h1);
+    line-height: 0.98;
+    letter-spacing: -0.015em;
+  }
+
+  .h1 em {
+    font-style: italic;
+    font-weight: 420;
+    color: var(--color-accent);
+  }
+
+  .h2 {
+    font-family: var(--font-display);
+    font-weight: 440;
+    font-variation-settings: "opsz" 40, "WONK" 0, "SOFT" 0;
+    font-size: var(--fs-h2);
+    line-height: 1.05;
+    letter-spacing: -0.01em;
+  }
+
+  .lede {
+    font-size: var(--fs-lede);
+    line-height: 1.5;
+    color: var(--color-ink-soft);
+    font-weight: 400;
+    font-stretch: 100%;
+  }
+
+  .lede em {
+    font-family: var(--font-display);
+    font-style: italic;
+    color: var(--color-ink);
+  }
+
+  .eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.6em;
+    font-family: var(--font-sans);
+    font-size: var(--fs-eyebrow);
+    font-weight: 600;
+    font-stretch: 90%;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--color-ink-soft);
+  }
+
+  .eyebrow::before {
+    content: "";
+    display: inline-block;
+    width: 1.6em;
+    height: 1px;
+    background: currentColor;
+  }
+
+  .eyebrow--no-rule::before {
+    display: none;
+  }
+
+  /* -----------------------------------------------------------------
+     Links & interactive primitives
+  ----------------------------------------------------------------- */
+  .underline-draw {
+    background-image: linear-gradient(currentColor, currentColor);
+    background-position: 0 100%;
+    background-repeat: no-repeat;
+    background-size: 0% 1px;
+    transition: background-size 0.5s var(--ease-editorial);
+  }
+
+  .underline-draw:hover,
+  .underline-draw:focus-visible {
+    background-size: 100% 1px;
+  }
+
+  /* -----------------------------------------------------------------
+     Layout helpers (the only "utility-ish" custom classes — everything
+     else is Tailwind for spacing/grid/flex)
+  ----------------------------------------------------------------- */
+  .edge {
+    padding-inline: var(--edge);
+  }
+
+  .wrap {
+    width: 100%;
+    max-width: var(--container-max);
+    margin-inline: auto;
+  }
+
+  /* -----------------------------------------------------------------
+     Hero background — a hand-tuned mesh of paper tones, not a blurred
+     blob. Drift is slow enough to read as "alive paper", never parallax.
+  ----------------------------------------------------------------- */
+  .hero-mesh {
+    position: absolute;
+    inset: -12% -6%;
+    z-index: 0;
+    pointer-events: none;
+    background-repeat: no-repeat;
+    background-image:
+      radial-gradient(38% 46% at 16% 20%, color-mix(in srgb, var(--color-accent) 9%, transparent), transparent 70%),
+      radial-gradient(46% 50% at 84% 10%, color-mix(in srgb, var(--color-ink) 6%, transparent), transparent 70%),
+      radial-gradient(60% 55% at 58% 96%, color-mix(in srgb, var(--color-paper-deep) 85%, transparent), transparent 75%);
+    animation: mesh-drift 56s ease-in-out infinite alternate;
+  }
+}
+
+@keyframes mesh-drift {
+  0% {
+    background-position: 0% 0%, 0% 0%, 0% 0%;
+    transform: scale(1);
+  }
+  100% {
+    background-position: 2% -2%, -2% 3%, 1% -1%;
+    transform: scale(1.03);
+  }
+}

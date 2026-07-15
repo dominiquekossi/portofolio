@@ -1,0 +1,30 @@
+import { Header } from "./components/chrome/Header";
+import { CustomCursor } from "./components/chrome/CustomCursor";
+import { Hero } from "./components/sections/Hero";
+import { FeaturedWork } from "./components/sections/FeaturedWork";
+import { ProductionProjects } from "./components/sections/ProductionProjects";
+import { OpenSource } from "./components/sections/OpenSource";
+import { About } from "./components/sections/About";
+import { Contact } from "./components/sections/Contact";
+import { useSmoothScroll } from "./lib/useSmoothScroll";
+
+function App() {
+  useSmoothScroll();
+
+  return (
+    <>
+      <CustomCursor />
+      <Header />
+      <main>
+        <Hero />
+        <FeaturedWork />
+        <ProductionProjects />
+        <OpenSource />
+        <About />
+        <Contact />
+      </main>
+    </>
+  );
+}
+
+export default App;
