@@ -20,13 +20,25 @@ export function About() {
 
     const ctx = gsap.context(() => {
       const targets = gsap.utils.toArray<HTMLElement>("[data-reveal]");
+      const maskTargets = gsap.utils.toArray<HTMLElement>("[data-mask-inner]");
 
       if (reducedMotion) {
         gsap.set(targets, { opacity: 1, y: 0 });
+        gsap.set(maskTargets, { yPercent: 0 });
         return;
       }
 
       gsap.set(targets, { opacity: 0, y: 28 });
+      gsap.set(maskTargets, { yPercent: 110 });
+
+      maskTargets.forEach((target) => {
+        gsap.to(target, {
+          yPercent: 0,
+          duration: 1,
+          ease: "power4.out",
+          scrollTrigger: { trigger: target, start: "top 85%" },
+        });
+      });
 
       targets.forEach((target) => {
         gsap.to(target, {
@@ -60,7 +72,11 @@ export function About() {
         </div>
 
         <div data-reveal className="opacity-0 md:col-span-8 md:col-start-5">
-          <h2 className="h1 mb-10 max-w-xl">Precision is the job.</h2>
+          <div className="mb-10 max-w-xl overflow-hidden">
+            <h2 data-mask-inner className="h1">
+              Precision is the job.
+            </h2>
+          </div>
 
           <div className="flex flex-col gap-6">
             <p className="lede max-w-[62ch]">

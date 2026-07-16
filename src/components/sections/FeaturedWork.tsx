@@ -15,13 +15,16 @@ export function FeaturedWork() {
 
     const ctx = gsap.context(() => {
       const targets = gsap.utils.toArray<HTMLElement>("[data-reveal]");
+      const maskTargets = gsap.utils.toArray<HTMLElement>("[data-mask-inner]");
 
       if (reducedMotion) {
         gsap.set(targets, { opacity: 1, y: 0 });
+        gsap.set(maskTargets, { yPercent: 0 });
         return;
       }
 
       gsap.set(targets, { opacity: 0, y: 32 });
+      gsap.set(maskTargets, { yPercent: 110 });
 
       targets.forEach((target) => {
         gsap.to(target, {
@@ -29,6 +32,18 @@ export function FeaturedWork() {
           y: 0,
           duration: 0.9,
           ease: "power3.out",
+          scrollTrigger: {
+            trigger: target,
+            start: "top 85%",
+          },
+        });
+      });
+
+      maskTargets.forEach((target) => {
+        gsap.to(target, {
+          yPercent: 0,
+          duration: 1,
+          ease: "power4.out",
           scrollTrigger: {
             trigger: target,
             start: "top 85%",
@@ -47,14 +62,16 @@ export function FeaturedWork() {
       <div className="wrap">
         <div data-reveal className="mb-16 max-w-2xl opacity-0 md:mb-24">
           <Eyebrow className="mb-5">Featured Work</Eyebrow>
-          <h2 className="h1">Recreated at pixel level, shipped at production level.</h2>
+          <div className="overflow-hidden">
+            <h2 data-mask-inner className="h1">
+              Recreated at pixel level, shipped at production level.
+            </h2>
+          </div>
         </div>
 
-        <div className="grid grid-cols-1 gap-x-10 gap-y-16 md:grid-cols-12">
-          <div className="md:col-span-7">
-            <CaseStudyCard study={featured} />
-          </div>
-          <div className="flex flex-col gap-16 md:col-span-5">
+        <div className="flex flex-col gap-16 md:gap-20">
+          <CaseStudyCard study={featured} featured />
+          <div className="grid grid-cols-1 gap-x-10 gap-y-16 sm:grid-cols-2">
             {rest.map((study) => (
               <CaseStudyCard key={study.id} study={study} />
             ))}

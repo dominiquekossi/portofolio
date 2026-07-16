@@ -62,19 +62,39 @@ export function RotatingCube() {
       });
       group.add(new THREE.LineSegments(edgesGeometry, edgeMaterial));
 
-      group.rotation.set(0.5, 0.6, 0);
+      const base = { x: 0.5, y: 0.6 };
+      group.rotation.set(base.x, base.y, 0);
       scene.add(group);
 
       const renderOnce = () => renderer.render(scene, camera);
 
       let frameId: number | null = null;
+      let onPointerMove: ((e: PointerEvent) => void) | null = null;
 
       if (reducedMotion) {
         renderOnce();
       } else {
+        // Idle spin plus a damped tilt toward the pointer — reads as an
+        // instrument tracking the visitor rather than a looping clip.
+        const tilt = { x: 0, y: 0 };
+        const tiltTarget = { x: 0, y: 0 };
+
+        onPointerMove = (e: PointerEvent) => {
+          if (e.pointerType !== "mouse") return;
+          const nx = (e.clientX / window.innerWidth - 0.5) * 2;
+          const ny = (e.clientY / window.innerHeight - 0.5) * 2;
+          tiltTarget.x = ny * 0.16;
+          tiltTarget.y = nx * 0.22;
+        };
+        window.addEventListener("pointermove", onPointerMove);
+
         const tick = () => {
-          group.rotation.x += 0.0022;
-          group.rotation.y += 0.0032;
+          base.x += 0.0022;
+          base.y += 0.0032;
+          tilt.x += (tiltTarget.x - tilt.x) * 0.05;
+          tilt.y += (tiltTarget.y - tilt.y) * 0.05;
+          group.rotation.x = base.x + tilt.x;
+          group.rotation.y = base.y + tilt.y;
           renderer.render(scene, camera);
           frameId = requestAnimationFrame(tick);
         };
@@ -94,6 +114,7 @@ export function RotatingCube() {
 
       cleanup = () => {
         if (frameId !== null) cancelAnimationFrame(frameId);
+        if (onPointerMove) window.removeEventListener("pointermove", onPointerMove);
         resizeObserver.disconnect();
         geometry.dispose();
         edgesGeometry.dispose();

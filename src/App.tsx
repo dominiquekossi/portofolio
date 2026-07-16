@@ -1,6 +1,7 @@
 import { Header } from "./components/chrome/Header";
 import { CustomCursor } from "./components/chrome/CustomCursor";
 import { Hero } from "./components/sections/Hero";
+import { PromptingForPrecision } from "./components/sections/PromptingForPrecision";
 import { FeaturedWork } from "./components/sections/FeaturedWork";
 import { ProductionProjects } from "./components/sections/ProductionProjects";
 import { OpenSource } from "./components/sections/OpenSource";
@@ -17,6 +18,7 @@ function App() {
       <Header />
       <main>
         <Hero />
+        <PromptingForPrecision />
         <FeaturedWork />
         <ProductionProjects />
         <OpenSource />

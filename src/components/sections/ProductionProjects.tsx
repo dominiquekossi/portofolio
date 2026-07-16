@@ -15,15 +15,40 @@ export function ProductionProjects() {
     const ctx = gsap.context(() => {
       const rows = gsap.utils.toArray<HTMLElement>("[data-row]");
       const rules = gsap.utils.toArray<HTMLElement>("[data-rule]");
+      const heading = gsap.utils.toArray<HTMLElement>("[data-reveal]");
+      const maskTargets = gsap.utils.toArray<HTMLElement>("[data-mask-inner]");
 
       if (reducedMotion) {
         gsap.set(rows, { opacity: 1 });
         gsap.set(rules, { scaleX: 1 });
+        gsap.set(heading, { opacity: 1, y: 0 });
+        gsap.set(maskTargets, { yPercent: 0 });
         return;
       }
 
       gsap.set(rows, { opacity: 0 });
       gsap.set(rules, { scaleX: 0 });
+      gsap.set(heading, { opacity: 0, y: 28 });
+      gsap.set(maskTargets, { yPercent: 110 });
+
+      heading.forEach((target) => {
+        gsap.to(target, {
+          opacity: 1,
+          y: 0,
+          duration: 0.9,
+          ease: "power3.out",
+          scrollTrigger: { trigger: target, start: "top 85%" },
+        });
+      });
+
+      maskTargets.forEach((target) => {
+        gsap.to(target, {
+          yPercent: 0,
+          duration: 1,
+          ease: "power4.out",
+          scrollTrigger: { trigger: target, start: "top 85%" },
+        });
+      });
 
       rows.forEach((row, i) => {
         const tl = gsap.timeline({
@@ -43,7 +68,14 @@ export function ProductionProjects() {
   return (
     <section id="production" ref={rootRef} className="edge py-28 md:py-32">
       <div className="wrap">
-        <Eyebrow className="mb-10 md:mb-14">Production Projects</Eyebrow>
+        <div data-reveal className="mb-16 max-w-2xl opacity-0 md:mb-20">
+          <Eyebrow className="mb-5">Production Projects</Eyebrow>
+          <div className="overflow-hidden">
+            <h2 data-mask-inner className="h1">
+              Built end to end, running in production.
+            </h2>
+          </div>
+        </div>
 
         <ul className="border-b border-line">
           {productionProjects.map((project, index) => (
@@ -54,7 +86,7 @@ export function ProductionProjects() {
                 className="absolute inset-x-0 top-0 h-px origin-left scale-x-0 bg-line"
               />
               <div className="grid grid-cols-1 gap-3 md:grid-cols-12 md:items-baseline md:gap-6">
-                <span className="text-[0.8rem] text-ink-faint md:col-span-1">
+                <span className="font-display-face figure-oldstyle text-[1rem] italic text-accent md:col-span-1">
                   {String(index + 1).padStart(2, "0")}
                 </span>
                 <h3 className="h2 md:col-span-4">{project.title}</h3>

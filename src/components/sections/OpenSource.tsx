@@ -16,16 +16,19 @@ export function OpenSource() {
       const items = gsap.utils.toArray<HTMLElement>("[data-item]");
       const rules = gsap.utils.toArray<HTMLElement>("[data-rule]");
       const heading = gsap.utils.toArray<HTMLElement>("[data-reveal]");
+      const maskTargets = gsap.utils.toArray<HTMLElement>("[data-mask-inner]");
 
       if (reducedMotion) {
         gsap.set([...heading, ...items], { opacity: 1, y: 0 });
         gsap.set(rules, { scaleX: 1 });
+        gsap.set(maskTargets, { yPercent: 0 });
         return;
       }
 
       gsap.set(heading, { opacity: 0, y: 28 });
       gsap.set(items, { opacity: 0, y: 20 });
       gsap.set(rules, { scaleX: 0 });
+      gsap.set(maskTargets, { yPercent: 110 });
 
       heading.forEach((target) => {
         gsap.to(target, {
@@ -33,6 +36,15 @@ export function OpenSource() {
           y: 0,
           duration: 0.9,
           ease: "power3.out",
+          scrollTrigger: { trigger: target, start: "top 85%" },
+        });
+      });
+
+      maskTargets.forEach((target) => {
+        gsap.to(target, {
+          yPercent: 0,
+          duration: 1,
+          ease: "power4.out",
           scrollTrigger: { trigger: target, start: "top 85%" },
         });
       });
@@ -57,7 +69,11 @@ export function OpenSource() {
       <div className="wrap">
         <div data-reveal className="mb-16 max-w-2xl opacity-0 md:mb-20">
           <Eyebrow className="mb-5">Open Source</Eyebrow>
-          <h2 className="h1">Six packages, maintained in the open.</h2>
+          <div className="overflow-hidden">
+            <h2 data-mask-inner className="h1">
+              Six packages, maintained in the open.
+            </h2>
+          </div>
         </div>
 
         <ul className="grid grid-cols-1 gap-x-10 gap-y-12 sm:grid-cols-2 lg:grid-cols-3">

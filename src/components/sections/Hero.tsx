@@ -18,11 +18,16 @@ export function Hero() {
 
     const ctx = gsap.context(() => {
       if (reducedMotion) {
-        gsap.set(["[data-reveal]", "[data-line-inner]", "[data-eyebrow]"], {
-          opacity: 1,
-          y: 0,
-          yPercent: 0,
-        });
+        gsap.set(
+          [
+            "[data-reveal]",
+            "[data-reveal-lede]",
+            "[data-cube-reveal]",
+            "[data-line-inner]",
+            "[data-eyebrow]",
+          ],
+          { opacity: 1, y: 0, yPercent: 0, scale: 1 },
+        );
         return;
       }
 
@@ -30,9 +35,21 @@ export function Hero() {
 
       tl.set("[data-line-inner]", { yPercent: 110 })
         .set("[data-reveal]", { opacity: 0, y: 16 })
+        .set("[data-reveal-lede]", { opacity: 0, y: 16 })
+        .set("[data-cube-reveal]", { opacity: 0, y: 14, scale: 0.94 })
         .to("[data-eyebrow]", { opacity: 1, y: 0, duration: 0.7 }, 0.15)
         .to("[data-line-inner]", { yPercent: 0, duration: 1.1, stagger: 0.12 }, 0.3)
-        .to("[data-reveal]", { opacity: 1, y: 0, duration: 0.8, stagger: 0.08 }, 0.95);
+        .to(
+          "[data-cube-reveal]",
+          { opacity: 1, y: 0, scale: 1, duration: 1.2, ease: "power3.out" },
+          0.7,
+        )
+        .to("[data-reveal-lede]", { opacity: 1, y: 0, duration: 0.85, ease: "power3.out" }, 0.95)
+        .to(
+          "[data-reveal]",
+          { opacity: 1, y: 0, duration: 0.8, stagger: 0.08, ease: "power3.out" },
+          1.2,
+        );
 
       if (tickRef.current) {
         gsap.fromTo(
@@ -50,7 +67,7 @@ export function Hero() {
     <section
       id="top"
       ref={rootRef}
-      className="edge relative flex min-h-[100svh] flex-col justify-between overflow-hidden pb-10 pt-28"
+      className="edge relative flex min-h-svh flex-col justify-between overflow-hidden pb-10 pt-28"
     >
       <div className="hero-mesh" aria-hidden />
 
@@ -58,7 +75,7 @@ export function Hero() {
       <RegistrationMark className="absolute right-(--edge) top-24 hidden text-ink-faint/70 md:block" />
 
       <div
-        data-reveal
+        data-cube-reveal
         aria-hidden
         className="absolute right-(--edge) top-[16%] z-5 hidden h-56 w-56 opacity-0 md:block lg:h-72 lg:w-72"
       >
@@ -84,7 +101,7 @@ export function Hero() {
         </h1>
 
         <div className="mt-10 grid grid-cols-1 gap-6 sm:grid-cols-12">
-          <p data-reveal className="lede opacity-0 sm:col-span-6 sm:col-start-7">
+          <p data-reveal-lede className="lede opacity-0 sm:col-span-6 sm:col-start-7">
             I build <em>golden-standard</em> frontend at an AI-focused startup: pixel-precise
             recreations of production interfaces used to train, evaluate, and benchmark AI
             models. React, Next.js, TypeScript and motion engineering, applied with print-shop
@@ -100,12 +117,19 @@ export function Hero() {
           <li className="hidden md:block">Playwright · Jest · Vitest</li>
         </ul>
 
-        <div data-reveal data-cursor="Scroll" className="flex items-center gap-3 opacity-0">
-          <span className="eyebrow eyebrow--no-rule">Scroll</span>
-          <span className="relative h-16 w-px overflow-hidden bg-line">
-            <span ref={tickRef} className="absolute left-0 top-0 h-4 w-px bg-ink" />
+        <a
+          href="#work"
+          data-reveal
+          data-cursor="View work"
+          className="group flex items-center gap-3 opacity-0"
+        >
+          <span className="eyebrow eyebrow--no-rule transition-colors duration-300 group-hover:text-accent">
+            View the work
           </span>
-        </div>
+          <span className="relative h-16 w-px overflow-hidden bg-line">
+            <span ref={tickRef} className="absolute left-0 top-0 h-4 w-px bg-accent" />
+          </span>
+        </a>
       </div>
     </section>
   );

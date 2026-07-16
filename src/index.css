@@ -14,6 +14,8 @@
   --color-line: #d8cfba;
   --color-accent: #a9752c;
   --color-accent-deep: #7b551f;
+  --color-accent-soft: color-mix(in srgb, var(--color-accent) 14%, var(--color-paper));
+  --color-accent-wash: color-mix(in srgb, var(--color-accent) 7%, transparent);
 
   --font-display: "Fraunces Variable", "Iowan Old Style", Georgia, serif;
   --font-sans: "Archivo Variable", ui-sans-serif, system-ui, sans-serif;
@@ -205,6 +207,53 @@
 
   .eyebrow--no-rule::before {
     display: none;
+  }
+
+  .figure-oldstyle {
+    font-variant-numeric: oldstyle-nums;
+  }
+
+  /* -----------------------------------------------------------------
+     Persistent nav links (header) — the accent color plus a tiny
+     registration mark stand in for an "active" underline, echoing the
+     prepress crosshairs used elsewhere rather than a generic dot.
+  ----------------------------------------------------------------- */
+  .nav-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.55em;
+    font-family: var(--font-sans);
+    font-size: var(--fs-eyebrow);
+    font-weight: 600;
+    font-stretch: 90%;
+    text-transform: uppercase;
+    letter-spacing: 0.16em;
+    color: var(--color-ink-soft);
+    transition: color 0.5s var(--ease-editorial);
+  }
+
+  .nav-link:hover,
+  .nav-link:focus-visible {
+    color: var(--color-ink);
+  }
+
+  .nav-link[data-active="true"] {
+    color: var(--color-accent);
+  }
+
+  .nav-mark {
+    display: inline-flex;
+    opacity: 0;
+    transform: scale(0.4);
+    transition:
+      opacity 0.5s var(--ease-editorial),
+      transform 0.5s var(--ease-editorial);
+  }
+
+  .nav-link[data-active="true"] .nav-mark {
+    opacity: 1;
+    transform: scale(1);
   }
 
   /* -----------------------------------------------------------------

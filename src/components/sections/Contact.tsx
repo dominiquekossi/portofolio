@@ -17,13 +17,25 @@ export function Contact() {
 
     const ctx = gsap.context(() => {
       const targets = gsap.utils.toArray<HTMLElement>("[data-reveal]");
+      const maskTargets = gsap.utils.toArray<HTMLElement>("[data-mask-inner]");
 
       if (reducedMotion) {
         gsap.set(targets, { opacity: 1, y: 0 });
+        gsap.set(maskTargets, { yPercent: 0 });
         return;
       }
 
       gsap.set(targets, { opacity: 0, y: 28 });
+      gsap.set(maskTargets, { yPercent: 110 });
+
+      maskTargets.forEach((target) => {
+        gsap.to(target, {
+          yPercent: 0,
+          duration: 1,
+          ease: "power4.out",
+          scrollTrigger: { trigger: target, start: "top 88%" },
+        });
+      });
 
       targets.forEach((target, i) => {
         gsap.to(target, {
@@ -46,7 +58,11 @@ export function Contact() {
         <div className="wrap">
           <div data-reveal className="opacity-0">
             <Eyebrow className="mb-8">Contact</Eyebrow>
-            <h2 className="h1 mb-10 max-w-xl">Say hello.</h2>
+            <div className="mb-10 max-w-xl overflow-hidden">
+              <h2 data-mask-inner className="h1">
+                Say hello.
+              </h2>
+            </div>
           </div>
 
           <a
