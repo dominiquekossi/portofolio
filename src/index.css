@@ -6,19 +6,23 @@
    default scale).
 --------------------------------------------------------------------- */
 @theme {
-  --color-paper: #f2eee3;
-  --color-paper-deep: #e7dfcd;
-  --color-ink: #18150f;
-  --color-ink-soft: #565045;
-  --color-ink-faint: #8c8576;
-  --color-line: #d8cfba;
+  /* Clean, bright warm-white stock instead of the muddy mid-cream that reads
+     as an AI-generated tell. Text tones pushed darker for stronger contrast:
+     body copy no longer sits soft against the ground. */
+  --color-paper: #f6f5f1;
+  --color-paper-deep: #ebe6da;
+  --color-ink: #14110b;
+  --color-ink-soft: #423d33;
+  --color-ink-faint: #6f6857;
+  --color-line: #ddd6c7;
   --color-accent: #a9752c;
-  --color-accent-deep: #7b551f;
+  --color-accent-deep: #77521e;
   --color-accent-soft: color-mix(in srgb, var(--color-accent) 14%, var(--color-paper));
   --color-accent-wash: color-mix(in srgb, var(--color-accent) 7%, transparent);
 
   --font-display: "Fraunces Variable", "Iowan Old Style", Georgia, serif;
   --font-sans: "Archivo Variable", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "Spline Sans Mono Variable", ui-monospace, "SFMono-Regular", Menlo, monospace;
 }
 
 /* ---------------------------------------------------------------------
@@ -33,7 +37,7 @@
   --edge: clamp(1.25rem, 1rem + 3vw, 3.5rem);
   --container-max: 90rem;
 
-  --fs-display: clamp(3.4rem, 2.2rem + 8vw, 10rem);
+  --fs-display: clamp(3rem, 1.9rem + 6.4vw, 8rem);
   --fs-h1: clamp(2.25rem, 1.6rem + 3.2vw, 4.5rem);
   --fs-h2: clamp(1.5rem, 1.2rem + 1.4vw, 2.25rem);
   --fs-lede: clamp(1.05rem, 0.95rem + 0.5vw, 1.4rem);
@@ -42,6 +46,10 @@
   --fs-eyebrow: 0.78rem;
 
   --ease-editorial: cubic-bezier(0.65, 0, 0.08, 1);
+  /* A weighted "settle": fast approach, tiny controlled ease into the lock.
+     Used for the registration mechanic so the plate reads as snapping into
+     alignment rather than gliding. */
+  --ease-lock: cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -119,6 +127,14 @@
   #root {
     position: relative;
     z-index: 0;
+  }
+
+  /* Scroll is held while the registration entrance plays so the viewer
+     always sees the lock from the top. Lifted the moment the plate settles. */
+  html.intro-active,
+  html.intro-active body {
+    overflow: hidden;
+    touch-action: none;
   }
 }
 
@@ -301,6 +317,190 @@
       radial-gradient(46% 50% at 84% 10%, color-mix(in srgb, var(--color-ink) 6%, transparent), transparent 70%),
       radial-gradient(60% 55% at 58% 96%, color-mix(in srgb, var(--color-paper-deep) 85%, transparent), transparent 75%);
     animation: mesh-drift 56s ease-in-out infinite alternate;
+  }
+
+  /* -----------------------------------------------------------------
+     Mono "press readout" layer — technical annotations (registration
+     status, plate labels, coordinates). A monospaced face is one you'd
+     never reach for on a default cream-editorial page, so it does real
+     work pushing this away from the generic look while staying on-theme
+     for a print-production system.
+  ----------------------------------------------------------------- */
+  .mono {
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--color-ink-faint);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .mono--accent {
+    color: var(--color-accent-deep);
+  }
+
+  /* -----------------------------------------------------------------
+     Registration mechanic (the signature). Each word belongs to one
+     plate (ink or ochre); a ghost of the other plate sits offset behind
+     it until it registers into perfect alignment. GSAP drives the ghost
+     offset via the --rx / --ry custom properties.
+  ----------------------------------------------------------------- */
+  .reg-line {
+    position: relative;
+    display: block;
+  }
+
+  .reg-ink {
+    position: relative;
+    display: block;
+    z-index: 1;
+  }
+
+  .reg-ghost {
+    position: absolute;
+    inset: 0;
+    display: block;
+    z-index: 0;
+    pointer-events: none;
+    transform: translate(var(--rx, 0), var(--ry, 0));
+    will-change: transform, opacity;
+  }
+
+  .reg-ghost--ochre {
+    color: var(--color-accent);
+  }
+
+  /* The ochre line: real glyphs on the ochre plate, ink ghost behind.
+     Both italic so the ghost is a pixel-exact double of the real word. */
+  .reg-line--hou .reg-ink {
+    color: var(--color-accent);
+    font-style: italic;
+    font-weight: 420;
+  }
+
+  .reg-line--hou .reg-ghost {
+    color: var(--color-ink);
+    font-style: italic;
+    font-weight: 420;
+  }
+
+  /* -----------------------------------------------------------------
+     Crop marks — true prepress corner brackets. One L shape rotated to
+     each corner, opening toward the content it frames.
+  ----------------------------------------------------------------- */
+  .crop-mark {
+    position: absolute;
+    width: 15px;
+    height: 15px;
+    color: var(--color-ink-faint);
+    pointer-events: none;
+  }
+
+  .crop-mark::before,
+  .crop-mark::after {
+    content: "";
+    position: absolute;
+    background: currentColor;
+  }
+
+  .crop-mark::before {
+    top: 0;
+    left: 0;
+    width: 1px;
+    height: 100%;
+  }
+
+  .crop-mark::after {
+    top: 0;
+    left: 0;
+    height: 1px;
+    width: 100%;
+  }
+
+  .crop-mark--tl {
+    transform: rotate(0deg);
+  }
+  .crop-mark--tr {
+    transform: rotate(90deg);
+  }
+  .crop-mark--br {
+    transform: rotate(180deg);
+  }
+  .crop-mark--bl {
+    transform: rotate(270deg);
+  }
+
+  /* -----------------------------------------------------------------
+     Calibration bar — the color-control strip printers add to a sheet
+     edge, here reduced to the two plates this site actually uses: steps
+     of the ochre plate plus a solid ink block. Discrete swatches, never
+     a gradient, so it stays inside the single-accent rule.
+  ----------------------------------------------------------------- */
+  .calibration {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .calibration__swatches {
+    display: flex;
+  }
+
+  .swatch {
+    width: 1.15rem;
+    height: 0.55rem;
+    background: color-mix(in srgb, var(--color-accent) calc(var(--d, 1) * 100%), var(--color-paper));
+  }
+
+  .swatch--ink {
+    background: var(--color-ink);
+    margin-left: 0.35rem;
+  }
+
+  /* -----------------------------------------------------------------
+     Registration entrance overlay (the "wow"). Full-bleed paper plate
+     with a centered crosshair and a mono readout counting the plate into
+     registration, then a clean upward wipe to reveal the page.
+  ----------------------------------------------------------------- */
+  .intro {
+    position: fixed;
+    inset: 0;
+    z-index: 200;
+    background: var(--color-paper);
+    display: grid;
+    place-items: center;
+    clip-path: inset(0 0 0 0);
+    will-change: clip-path;
+  }
+
+  .intro__inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1.5rem;
+  }
+
+  .intro__cross {
+    color: var(--color-accent);
+    will-change: transform, opacity;
+  }
+
+  .intro__readout {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    font-family: var(--font-mono);
+    font-size: 0.72rem;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--color-ink-soft);
+    font-variant-numeric: tabular-nums;
+  }
+
+  .intro__status {
+    color: var(--color-accent-deep);
   }
 }
 

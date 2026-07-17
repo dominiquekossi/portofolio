@@ -21,9 +21,9 @@ const caseStudies: PromptCaseStudy[] = [
     label: "The Hero cube",
     prompt: "The initial ask was simple: add a rotating 3D object to the Hero.",
     risk:
-      "The default instinct for a rotating cube skews toward a colorful, beveled, Rubik's cube look, the kind of choice a model reaches for without more direction. That would have fought this site's restricted editorial palette on sight.",
+      "A rotating cube pulls straight toward the six-color Rubik's toy, and those colors, blue in particular, would break the locked ochre-on-paper palette on sight. The first pass overcorrected into a bare wireframe, which read as safe but said nothing.",
     result:
-      "The brief was narrowed to wireframe geometry only, edges in the exact accent color already defined in the design tokens, faces nearly transparent. The object rotating above is that result: a precision instrument, not a toy.",
+      "The cube above is the second pass: a 3x3 that starts scrambled and solves itself, rendered only in the site's own plates, ochre, ink, and paper tones, never toy colors. The self-solve turns chaos into order, the same thesis as the registration lock in the entrance.",
   },
   {
     label: "The accent color",

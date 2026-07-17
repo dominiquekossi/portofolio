@@ -4,6 +4,7 @@ import { createRoot } from "react-dom/client";
 import "@fontsource-variable/fraunces/full.css";
 import "@fontsource-variable/fraunces/full-italic.css";
 import "@fontsource-variable/archivo/wdth.css";
+import "@fontsource-variable/spline-sans-mono/wght.css";
 
 import "./index.css";
 import App from "./App.tsx";

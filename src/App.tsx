@@ -1,5 +1,6 @@
 import { Header } from "./components/chrome/Header";
 import { CustomCursor } from "./components/chrome/CustomCursor";
+import { Preloader } from "./components/chrome/Preloader";
 import { Hero } from "./components/sections/Hero";
 import { PromptingForPrecision } from "./components/sections/PromptingForPrecision";
 import { FeaturedWork } from "./components/sections/FeaturedWork";
@@ -14,6 +15,7 @@ function App() {
 
   return (
     <>
+      <Preloader />
       <CustomCursor />
       <Header />
       <main>

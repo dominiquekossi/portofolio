@@ -4,9 +4,10 @@ import { useReducedMotion } from "../../lib/useReducedMotion";
 import { Eyebrow } from "../ui/Eyebrow";
 
 const facts = [
-  { label: "Role", value: "Senior Frontend Engineer" },
-  { label: "Focus", value: "AI training & evaluation interfaces" },
-  { label: "Stack", value: "React · Next.js · TypeScript" },
+  { label: "Role", value: "Full-Stack Software Engineer" },
+  { label: "Backend", value: "Node.js · .NET / C# · REST APIs" },
+  { label: "Frontend", value: "React · Next.js · TypeScript" },
+  { label: "Motion", value: "GSAP · Three.js" },
   { label: "Testing", value: "Playwright · Jest · Vitest" },
 ];
 
@@ -80,16 +81,17 @@ export function About() {
 
           <div className="flex flex-col gap-6">
             <p className="lede max-w-[62ch]">
-              I'm Kossi Houessou, a senior frontend engineer. Today that means building
-              golden-standard frontend implementations at an AI-focused startup: pixel-precise
-              recreations of production interfaces used to train, evaluate, and benchmark AI
-              models. The brief is a real, shipped product, and the tolerance for drift from it
-              is zero.
+              I'm Kossi Houessou, a full-stack software engineer. I build across the whole stack,
+              Node and .NET services on the back, React and motion-engineered interfaces on the
+              front. A lot of that work is golden-standard: pixel-precise recreations of
+              production interfaces used to train, evaluate, and benchmark AI models, where the
+              tolerance for drift from a real, shipped brief is zero.
             </p>
 
             <p className="lede max-w-[62ch]">
-              React, Next.js, and TypeScript are the default. Tailwind CSS and GSAP handle
-              layout and motion. Playwright, Jest, and Vitest cover the parts of a build that
+              On the backend that means Node.js and .NET with C#, REST APIs, and the data access
+              behind them. On the front it's React, Next.js, and TypeScript, with GSAP and
+              Three.js for motion. Playwright, Jest, and Vitest cover the parts of a build that
               shouldn't depend on me noticing a regression by eye.
             </p>
 
