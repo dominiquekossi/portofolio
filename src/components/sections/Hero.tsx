@@ -4,6 +4,8 @@ import { gsap } from "../../lib/gsap";
 import { useReducedMotion } from "../../lib/useReducedMotion";
 import { useMediaQuery } from "../../lib/useMediaQuery";
 import { onIntroReveal } from "../../lib/intro";
+import { useLanguage } from "../../lib/LanguageContext";
+import { copy } from "../../content/copy";
 import { Eyebrow } from "../ui/Eyebrow";
 import { RotatingCube } from "../three/RotatingCube";
 
@@ -18,6 +20,7 @@ export function Hero() {
   const rootRef = useRef<HTMLElement>(null);
   const reducedMotion = useReducedMotion();
   const showCube = useMediaQuery("(min-width: 768px)");
+  const { t } = useLanguage();
 
   useLayoutEffect(() => {
     const root = rootRef.current;
@@ -110,7 +113,7 @@ export function Hero() {
 
       <div className="wrap relative z-10 flex flex-1 flex-col justify-center">
         <div data-eyebrow>
-          <Eyebrow className="mb-6">Full-Stack Software Engineer · Portfolio 2026</Eyebrow>
+          <Eyebrow className="mb-6">{t(copy.hero.eyebrow)}</Eyebrow>
         </div>
 
         <h1 data-hero-name className="h-display">
@@ -130,18 +133,12 @@ export function Hero() {
 
         <div className="mt-8 grid grid-cols-1 gap-x-10 gap-y-8 md:grid-cols-12">
           <p data-reveal-lede className="lede md:col-span-7">
-            Full-Stack Software Engineer building software end to end, Node and .NET on the
-            backend, React and motion-engineered interfaces on the front, all held to print-shop
-            precision. I do my best work in fast-growing environments where the bar moves every
-            week. That precision carries into the rest too: pixel-exact interface recreations
-            used to train and evaluate AI models, AI-native tools of my own like an MCP
-            orchestrator and a multi-provider LLM cost tracker, and instructions clear enough
-            that a model, or a person, does exactly what you meant.
+            {t(copy.hero.lede)}
           </p>
 
           <div data-reveal className="flex flex-col gap-5 md:col-span-4 md:col-start-9">
             <Eyebrow rule={false} className="text-ink-soft">
-              Stack I work in
+              {t(copy.hero.stackEyebrow)}
             </Eyebrow>
             {STACK_GROUPS.map((group) => (
               <div key={group.label}>
@@ -164,24 +161,24 @@ export function Hero() {
 
       <div className="wrap relative z-10 flex flex-wrap items-center justify-between gap-4 border-t border-line pt-4">
         <div data-reveal className="calibration">
-          <span className="mono">Ochre</span>
+          <span className="mono">{t(copy.hero.ochre)}</span>
           <span className="calibration__swatches" aria-hidden>
             {OCHRE_STEPS.map((d) => (
               <span key={d} className="swatch" style={{ "--d": d } as CSSProperties} />
             ))}
             <span className="swatch swatch--ink" />
           </span>
-          <span className="mono">Ink</span>
+          <span className="mono">{t(copy.hero.ink)}</span>
         </div>
 
         <a
           href="#work"
           data-reveal
-          data-cursor="View work"
+          data-cursor={t(copy.cursor.viewWork)}
           className="group flex items-center gap-3"
         >
           <span className="eyebrow eyebrow--no-rule transition-colors duration-300 group-hover:text-accent">
-            View the work
+            {t(copy.hero.viewTheWork)}
           </span>
           <span className="relative flex h-4 w-4 items-center justify-center">
             <span className="block h-2.5 w-2.5 rotate-45 border-b border-r border-ink transition-transform duration-300 group-hover:translate-x-0.5 group-hover:translate-y-0.5 group-hover:border-accent" />

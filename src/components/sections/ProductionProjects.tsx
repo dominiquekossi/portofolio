@@ -1,12 +1,15 @@
 import { useLayoutEffect, useRef } from "react";
 import { gsap } from "../../lib/gsap";
 import { useReducedMotion } from "../../lib/useReducedMotion";
+import { useLanguage } from "../../lib/LanguageContext";
+import { copy } from "../../content/copy";
 import { Eyebrow } from "../ui/Eyebrow";
 import { productionProjects } from "../../content/productionProjects";
 
 export function ProductionProjects() {
   const rootRef = useRef<HTMLElement>(null);
   const reducedMotion = useReducedMotion();
+  const { t } = useLanguage();
 
   useLayoutEffect(() => {
     const root = rootRef.current;
@@ -69,10 +72,10 @@ export function ProductionProjects() {
     <section id="production" ref={rootRef} className="edge py-28 md:py-32">
       <div className="wrap">
         <div data-reveal className="mb-16 max-w-2xl opacity-0 md:mb-20">
-          <Eyebrow className="mb-5">Production Projects</Eyebrow>
+          <Eyebrow className="mb-5">{t(copy.productionProjects.eyebrow)}</Eyebrow>
           <div className="overflow-hidden">
             <h2 data-mask-inner className="h1">
-              Built end to end, running in production.
+              {t(copy.productionProjects.heading)}
             </h2>
           </div>
         </div>
@@ -89,8 +92,8 @@ export function ProductionProjects() {
                 <span className="font-display-face figure-oldstyle text-[1rem] italic text-accent md:col-span-1">
                   {String(index + 1).padStart(2, "0")}
                 </span>
-                <h3 className="h2 md:col-span-4">{project.title}</h3>
-                <p className="lede md:col-span-5">{project.description}</p>
+                <h3 className="h2 md:col-span-4">{t(project.title)}</h3>
+                <p className="lede md:col-span-5">{t(project.description)}</p>
                 <ul className="flex flex-wrap gap-x-3 gap-y-1 text-[0.8rem] text-ink-soft md:col-span-2 md:justify-self-end md:text-right">
                   {project.stack.map((item) => (
                     <li key={item}>{item}</li>

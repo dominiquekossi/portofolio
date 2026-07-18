@@ -1,12 +1,15 @@
 import { useLayoutEffect, useRef } from "react";
 import { gsap } from "../../lib/gsap";
 import { useReducedMotion } from "../../lib/useReducedMotion";
+import { useLanguage } from "../../lib/LanguageContext";
+import { copy } from "../../content/copy";
 import { Eyebrow } from "../ui/Eyebrow";
 import { openSourcePackages } from "../../content/openSourcePackages";
 
 export function OpenSource() {
   const rootRef = useRef<HTMLElement>(null);
   const reducedMotion = useReducedMotion();
+  const { t } = useLanguage();
 
   useLayoutEffect(() => {
     const root = rootRef.current;
@@ -68,10 +71,10 @@ export function OpenSource() {
     <section id="open-source" ref={rootRef} className="edge py-28 md:py-36">
       <div className="wrap">
         <div data-reveal className="mb-16 max-w-2xl opacity-0 md:mb-20">
-          <Eyebrow className="mb-5">Open Source</Eyebrow>
+          <Eyebrow className="mb-5">{t(copy.openSource.eyebrow)}</Eyebrow>
           <div className="overflow-hidden">
             <h2 data-mask-inner className="h1">
-              Six packages, maintained in the open.
+              {t(copy.openSource.heading)}
             </h2>
           </div>
         </div>
@@ -88,16 +91,16 @@ export function OpenSource() {
                 {pkg.name}
               </h3>
               <p className="mt-2 text-[0.95rem] leading-relaxed text-ink-soft">
-                {pkg.description}
+                {t(pkg.description)}
               </p>
               <a
                 href={pkg.href}
                 target="_blank"
                 rel="noopener noreferrer"
-                data-cursor="View repo"
+                data-cursor={t(copy.cursor.viewRepo)}
                 className="eyebrow underline-draw mt-4 inline-flex"
               >
-                View on GitHub ↗
+                {t(copy.openSource.viewOnGithub)}
               </a>
             </li>
           ))}

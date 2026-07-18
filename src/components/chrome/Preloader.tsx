@@ -2,6 +2,8 @@ import { useLayoutEffect, useRef, useState } from "react";
 import { gsap } from "../../lib/gsap";
 import { useReducedMotion } from "../../lib/useReducedMotion";
 import { fireIntroReveal, introHasFired } from "../../lib/intro";
+import { useLanguage } from "../../lib/LanguageContext";
+import { copy } from "../../content/copy";
 
 /**
  * The registration entrance. Reads like a two-plate press coming into
@@ -12,6 +14,7 @@ import { fireIntroReveal, introHasFired } from "../../lib/intro";
  */
 export function Preloader() {
   const reducedMotion = useReducedMotion();
+  const { t } = useLanguage();
   const [visible, setVisible] = useState(() => !introHasFired());
   const rootRef = useRef<HTMLDivElement>(null);
   const numRef = useRef<HTMLSpanElement>(null);
@@ -149,12 +152,12 @@ export function Preloader() {
         </svg>
 
         <div className="intro__readout">
-          <span>Register</span>
+          <span>{t(copy.preloader.register)}</span>
           <span>
             <span ref={numRef}>000</span>%
           </span>
           <span className="intro__status" ref={statusRef}>
-            Locked
+            {t(copy.preloader.locked)}
           </span>
         </div>
       </div>

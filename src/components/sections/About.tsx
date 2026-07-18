@@ -1,19 +1,14 @@
 import { useLayoutEffect, useRef } from "react";
 import { gsap } from "../../lib/gsap";
 import { useReducedMotion } from "../../lib/useReducedMotion";
+import { useLanguage } from "../../lib/LanguageContext";
+import { copy } from "../../content/copy";
 import { Eyebrow } from "../ui/Eyebrow";
-
-const facts = [
-  { label: "Role", value: "Full-Stack Software Engineer" },
-  { label: "Backend", value: "Node.js · .NET / C# · REST APIs" },
-  { label: "Frontend", value: "React · Next.js · TypeScript" },
-  { label: "Motion", value: "GSAP · Three.js" },
-  { label: "Testing", value: "Playwright · Jest · Vitest" },
-];
 
 export function About() {
   const rootRef = useRef<HTMLElement>(null);
   const reducedMotion = useReducedMotion();
+  const { t } = useLanguage();
 
   useLayoutEffect(() => {
     const root = rootRef.current;
@@ -59,14 +54,14 @@ export function About() {
     <section id="about" ref={rootRef} className="edge py-28 md:py-36">
       <div className="wrap grid grid-cols-1 gap-x-10 gap-y-14 md:grid-cols-12">
         <div data-reveal className="opacity-0 md:col-span-3">
-          <Eyebrow className="mb-8">About</Eyebrow>
+          <Eyebrow className="mb-8">{t(copy.about.eyebrow)}</Eyebrow>
           <dl className="flex flex-col gap-5">
-            {facts.map((fact) => (
-              <div key={fact.label} className="border-t border-line pt-3">
+            {copy.about.facts.map((fact) => (
+              <div key={fact.label.en} className="border-t border-line pt-3">
                 <dt className="text-[0.7rem] uppercase tracking-[0.14em] text-ink-faint">
-                  {fact.label}
+                  {t(fact.label)}
                 </dt>
-                <dd className="mt-1 text-[0.9rem] text-ink-soft">{fact.value}</dd>
+                <dd className="mt-1 text-[0.9rem] text-ink-soft">{t(fact.value)}</dd>
               </div>
             ))}
           </dl>
@@ -75,39 +70,20 @@ export function About() {
         <div data-reveal className="opacity-0 md:col-span-8 md:col-start-5">
           <div className="mb-10 max-w-xl overflow-hidden">
             <h2 data-mask-inner className="h1">
-              Precision is the job.
+              {t(copy.about.heading)}
             </h2>
           </div>
 
           <div className="flex flex-col gap-6">
-            <p className="lede max-w-[62ch]">
-              I'm Kossi Houessou, a full-stack software engineer. I build across the whole stack,
-              Node and .NET services on the back, React and motion-engineered interfaces on the
-              front. A lot of that work is golden-standard: pixel-precise recreations of
-              production interfaces used to train, evaluate, and benchmark AI models, where the
-              tolerance for drift from a real, shipped brief is zero.
-            </p>
+            <p className="lede max-w-[62ch]">{t(copy.about.paragraphs[0])}</p>
 
-            <p className="lede max-w-[62ch]">
-              On the backend that means Node.js and .NET with C#, REST APIs, and the data access
-              behind them. On the front it's React, Next.js, and TypeScript, with GSAP and
-              Three.js for motion. Playwright, Jest, and Vitest cover the parts of a build that
-              shouldn't depend on me noticing a regression by eye.
-            </p>
+            <p className="lede max-w-[62ch]">{t(copy.about.paragraphs[1])}</p>
 
             <p className="lede max-w-[62ch] border-l-2 border-accent py-1 pl-6">
-              Prompt engineering shows up in this work even when it isn't labeled that way. The
-              specs I write to guide tools like Claude Code and Cursor toward production-quality
-              output follow the same logic as the training and evaluation material I build for
-              AI models. Precision and structure in the instruction is what determines the
-              quality of what comes back.
+              {t(copy.about.paragraphs[2])}
             </p>
 
-            <p className="lede max-w-[62ch]">
-              Visual QA happens while I build, not after it. A five-pixel drift or a
-              hundred-millisecond mistiming is exactly the kind of thing this work exists to
-              catch, so it gets caught early.
-            </p>
+            <p className="lede max-w-[62ch]">{t(copy.about.paragraphs[3])}</p>
           </div>
         </div>
       </div>

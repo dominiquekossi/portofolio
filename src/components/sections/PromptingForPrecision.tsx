@@ -1,43 +1,14 @@
 import { useLayoutEffect, useRef } from "react";
 import { gsap } from "../../lib/gsap";
 import { useReducedMotion } from "../../lib/useReducedMotion";
+import { useLanguage } from "../../lib/LanguageContext";
+import { copy } from "../../content/copy";
 import { Eyebrow } from "../ui/Eyebrow";
-
-const motionExample = {
-  vague: "Make the cards fade in when you scroll to them.",
-  precise:
-    "Fade each card from 0 to full opacity and move it 32px upward over 900ms, eased on a power3 out curve. Stagger siblings by 80ms. Trigger when the element's top edge crosses 85% of the viewport height, not on page load and not at a fixed scroll offset.",
-};
-
-interface PromptCaseStudy {
-  label: string;
-  prompt: string;
-  risk: string;
-  result: string;
-}
-
-const caseStudies: PromptCaseStudy[] = [
-  {
-    label: "The Hero cube",
-    prompt: "The initial ask was simple: add a rotating 3D object to the Hero.",
-    risk:
-      "A rotating cube pulls straight toward the six-color Rubik's toy, and those colors, blue in particular, would break the locked ochre-on-paper palette on sight. The first pass overcorrected into a bare wireframe, which read as safe but said nothing.",
-    result:
-      "The cube above is the second pass: a 3x3 that starts scrambled and solves itself, rendered only in the site's own plates, ochre, ink, and paper tones, never toy colors. The self-solve turns chaos into order, the same thesis as the registration lock in the entrance.",
-  },
-  {
-    label: "The accent color",
-    prompt: "Generate three candidate accent colors for a paper and ink editorial palette.",
-    risk:
-      "One candidate leaned toward the blue most portfolio sites default to. Another sat close to the warm terracotta that currently reads as a generic AI-generated design tell. Both were rejected on sight, not on preference, because either would undercut the point of a distinctive palette.",
-    result:
-      "The ochre gold used throughout this site, in the headline emphasis, the cube's edges, every link underline, was the third option: warm enough to feel print shop rather than tech startup, specific enough to not read as a template default.",
-  },
-];
 
 export function PromptingForPrecision() {
   const rootRef = useRef<HTMLElement>(null);
   const reducedMotion = useReducedMotion();
+  const { t } = useLanguage();
 
   useLayoutEffect(() => {
     const root = rootRef.current;
@@ -83,68 +54,66 @@ export function PromptingForPrecision() {
     <section id="prompting" ref={rootRef} className="edge py-28 md:py-36">
       <div className="wrap">
         <div data-reveal className="mb-16 max-w-2xl opacity-0 md:mb-20">
-          <Eyebrow className="mb-5">Prompting for Precision</Eyebrow>
+          <Eyebrow className="mb-5">{t(copy.prompting.eyebrow)}</Eyebrow>
           <div className="overflow-hidden">
             <h2 data-mask-inner className="h1">
-              Precise enough to reproduce exact behavior, not to generate images.
+              {t(copy.prompting.heading)}
             </h2>
           </div>
-          <p className="lede mt-6 max-w-[62ch]">
-            Most of my work with AI is not about generating images. It is about writing
-            instructions precise enough for a model to reproduce exact visual and motion
-            behavior, then evaluating and refining the result until it matches the reference.
-            That discipline comes from building golden-standard frontend implementations used to
-            train and evaluate AI models: the same precision, applied to the tools themselves.
-          </p>
+          <p className="lede mt-6 max-w-[62ch]">{t(copy.prompting.lede)}</p>
         </div>
 
         <div data-reveal className="opacity-0">
           <Eyebrow rule={false} className="mb-5">
-            Specifying motion
+            {t(copy.prompting.specifyingMotion)}
           </Eyebrow>
           <div className="grid grid-cols-1 gap-x-10 gap-y-8 sm:grid-cols-2">
             <div className="border border-line bg-paper-deep p-6">
-              <span className="eyebrow eyebrow--no-rule text-ink-faint">Vague prompt</span>
-              <p className="lede mt-4">{motionExample.vague}</p>
+              <span className="eyebrow eyebrow--no-rule text-ink-faint">
+                {t(copy.prompting.vaguePromptLabel)}
+              </span>
+              <p className="lede mt-4">{t(copy.prompting.vaguePromptText)}</p>
             </div>
             <div className="border border-accent bg-paper-deep p-6">
-              <span className="eyebrow eyebrow--no-rule text-accent-deep">Precise prompt</span>
-              <p className="lede mt-4">{motionExample.precise}</p>
+              <span className="eyebrow eyebrow--no-rule text-accent-deep">
+                {t(copy.prompting.precisePromptLabel)}
+              </span>
+              <p className="lede mt-4">{t(copy.prompting.precisePromptText)}</p>
             </div>
           </div>
         </div>
 
         <div data-reveal className="mt-20 opacity-0 md:mt-24">
           <Eyebrow rule={false} className="mb-5">
-            From building this site
+            {t(copy.prompting.fromBuildingThisSite)}
           </Eyebrow>
           <div className="grid grid-cols-1 gap-x-10 gap-y-12 md:grid-cols-2">
-            {caseStudies.map((study) => (
-              <div key={study.label} className="border-t border-line pt-6">
-                <h3 className="h2 mb-5">{study.label}</h3>
+            {copy.prompting.caseStudies.map((study) => (
+              <div key={study.label.en} className="border-t border-line pt-6">
+                <h3 className="h2 mb-5">{t(study.label)}</h3>
                 <dl className="flex flex-col gap-4">
                   <div>
                     <dt className="text-[0.7rem] uppercase tracking-[0.14em] text-ink-faint">
-                      Prompt
+                      {t(copy.prompting.promptLabel)}
                     </dt>
                     <dd className="mt-1 text-[0.95rem] leading-relaxed text-ink-soft">
-                      {study.prompt}
+                      {t(study.prompt)}
                     </dd>
                   </div>
                   <div>
                     <dt className="text-[0.7rem] uppercase tracking-[0.14em] text-ink-faint">
-                      Risk / critique
+                      {t(copy.prompting.riskLabel)}
                     </dt>
                     <dd className="mt-1 text-[0.95rem] leading-relaxed text-ink-soft">
-                      {study.risk}
+                      {t(study.risk)}
                     </dd>
                   </div>
                   <div>
                     <dt className="text-[0.7rem] uppercase tracking-[0.14em] text-accent-deep">
-                      Result
+                      {t(copy.prompting.resultLabel)}
                     </dt>
                     <dd className="mt-1 text-[0.95rem] leading-relaxed text-ink-soft">
-                      {study.result}
+                      {t(study.result)}
                     </dd>
                   </div>
                 </dl>

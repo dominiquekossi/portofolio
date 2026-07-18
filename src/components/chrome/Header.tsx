@@ -1,6 +1,9 @@
 import { useEffect, useState } from "react";
 import { Eyebrow } from "../ui/Eyebrow";
 import { RegistrationMark } from "../ui/RegistrationMark";
+import { LanguageToggle } from "../ui/LanguageToggle";
+import { useLanguage } from "../../lib/LanguageContext";
+import { copy } from "../../content/copy";
 
 function formatSFTime() {
   return new Intl.DateTimeFormat("en-US", {
@@ -25,11 +28,12 @@ function useSFTime() {
 /**
  * Three nav "zones" rather than one entry per <section> — Production
  * Projects and Open Source both read as part of the work story, so they
- * keep "Work" lit instead of introducing a fourth/fifth nav item.
+ * keep "Work" lit instead of introducing a fourth/fifth nav item. `label`
+ * is bilingual; everything else is structural and language-independent.
  */
-const ZONES: { id: string; sectionIds: string[]; label: string; href: string }[] = [
-  { id: "work", sectionIds: ["work", "production", "open-source"], label: "Work", href: "#work" },
-  { id: "about", sectionIds: ["about"], label: "About", href: "#about" },
+const ZONES: { id: string; sectionIds: string[]; label: (typeof copy)["header"]["work"]; href: string }[] = [
+  { id: "work", sectionIds: ["work", "production", "open-source"], label: copy.header.work, href: "#work" },
+  { id: "about", sectionIds: ["about"], label: copy.header.about, href: "#about" },
 ];
 
 function useActiveZone() {
@@ -69,27 +73,32 @@ function useActiveZone() {
 export function Header() {
   const time = useSFTime();
   const activeZone = useActiveZone();
+  const { t } = useLanguage();
 
   return (
     <header className="fixed inset-x-0 top-0 z-50 edge border-b border-line/60 bg-paper/85 py-5 backdrop-blur-md">
-      <div className="wrap flex items-center justify-between">
-        <a href="#top" className="font-display-face text-lg text-ink" data-cursor="Top">
+      <div className="wrap flex items-center justify-between gap-4">
+        <a
+          href="#top"
+          className="shrink-0 whitespace-nowrap font-display-face text-lg text-ink"
+          data-cursor={t(copy.cursor.top)}
+        >
           Kossi Houessou<span className="text-accent">.</span>
         </a>
 
-        <nav className="flex items-center gap-7 sm:gap-9" aria-label="Section">
+        <nav className="flex items-center gap-4 sm:gap-7 lg:gap-9" aria-label="Section">
           <div className="hidden items-center gap-7 sm:flex">
             {ZONES.map((zone) => (
               <a
                 key={zone.id}
                 href={zone.href}
-                data-cursor={zone.label}
+                data-cursor={t(zone.label)}
                 data-active={activeZone === zone.id}
                 aria-current={activeZone === zone.id ? "true" : undefined}
                 className="nav-link"
               >
                 <RegistrationMark className="nav-mark h-2.5 w-2.5 text-accent" />
-                {zone.label}
+                {t(zone.label)}
               </a>
             ))}
           </div>
@@ -98,8 +107,10 @@ export function Header() {
             SF · {time}
           </Eyebrow>
 
-          <a href="#contact" data-cursor="Say hi" className="eyebrow underline-draw">
-            Say hi ↗
+          <LanguageToggle />
+
+          <a href="#contact" data-cursor={t(copy.cursor.sayHi)} className="eyebrow underline-draw">
+            {t(copy.header.sayHi)}
           </a>
         </nav>
       </div>

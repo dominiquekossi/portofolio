@@ -1,6 +1,8 @@
 import { useLayoutEffect, useRef } from "react";
 import { gsap } from "../../lib/gsap";
 import { useReducedMotion } from "../../lib/useReducedMotion";
+import { useLanguage } from "../../lib/LanguageContext";
+import { copy } from "../../content/copy";
 import { Eyebrow } from "../ui/Eyebrow";
 
 const EMAIL = "houessoudominique@gmail.com";
@@ -10,6 +12,7 @@ const GITHUB = "https://github.com/dominiquekossi";
 export function Contact() {
   const rootRef = useRef<HTMLElement>(null);
   const reducedMotion = useReducedMotion();
+  const { t } = useLanguage();
 
   useLayoutEffect(() => {
     const root = rootRef.current;
@@ -57,17 +60,17 @@ export function Contact() {
       <section id="contact" ref={rootRef} className="edge py-28 md:py-40">
         <div className="wrap">
           <div data-reveal className="opacity-0">
-            <Eyebrow className="mb-8">Contact</Eyebrow>
+            <Eyebrow className="mb-8">{t(copy.contact.eyebrow)}</Eyebrow>
             <div className="mb-10 max-w-xl overflow-hidden">
               <h2 data-mask-inner className="h1">
-                Say hello.
+                {t(copy.contact.heading)}
               </h2>
             </div>
           </div>
 
           <a
             href={`mailto:${EMAIL}`}
-            data-cursor="Email"
+            data-cursor={t(copy.cursor.email)}
             data-reveal
             className="h1 underline-draw inline-block break-all opacity-0"
           >
@@ -79,7 +82,7 @@ export function Contact() {
               href={LINKEDIN}
               target="_blank"
               rel="noopener noreferrer"
-              data-cursor="LinkedIn"
+              data-cursor={t(copy.cursor.linkedin)}
               className="eyebrow underline-draw"
             >
               LinkedIn ↗
@@ -88,7 +91,7 @@ export function Contact() {
               href={GITHUB}
               target="_blank"
               rel="noopener noreferrer"
-              data-cursor="GitHub"
+              data-cursor={t(copy.cursor.github)}
               className="eyebrow underline-draw"
             >
               GitHub ↗
@@ -100,8 +103,8 @@ export function Contact() {
       <footer className="edge border-t border-line py-8">
         <div className="wrap flex flex-col gap-4 text-[0.8rem] text-ink-faint sm:flex-row sm:items-center sm:justify-between">
           <span>&copy; {new Date().getFullYear()} Kossi Houessou</span>
-          <a href="#top" data-cursor="Top" className="eyebrow underline-draw">
-            Back to top ↑
+          <a href="#top" data-cursor={t(copy.cursor.top)} className="eyebrow underline-draw">
+            {t(copy.contact.backToTop)}
           </a>
         </div>
       </footer>

@@ -1,7 +1,10 @@
 import { useEffect, useRef } from "react";
 import { gsap } from "../../lib/gsap";
 import { useReducedMotion } from "../../lib/useReducedMotion";
+import { useLanguage } from "../../lib/LanguageContext";
+import { copy } from "../../content/copy";
 import { Eyebrow } from "../ui/Eyebrow";
+import { PhoneFrame } from "../ui/PhoneFrame";
 import type { CaseStudy } from "../../content/caseStudies";
 
 interface CaseStudyCardProps {
@@ -13,6 +16,7 @@ export function CaseStudyCard({ study, featured = false }: CaseStudyCardProps) {
   const cardRef = useRef<HTMLElement>(null);
   const imgRef = useRef<HTMLImageElement>(null);
   const reducedMotion = useReducedMotion();
+  const { t } = useLanguage();
 
   useEffect(() => {
     const card = cardRef.current;
@@ -43,35 +47,48 @@ export function CaseStudyCard({ study, featured = false }: CaseStudyCardProps) {
         href={study.href}
         target="_blank"
         rel="noopener noreferrer"
-        data-cursor="View live"
+        data-cursor={t(copy.cursor.viewLive)}
         className="block border border-line bg-paper-deep p-2 transition-colors duration-500 group-hover:border-accent md:p-3"
       >
         <div className={featured ? "aspect-21/9 overflow-hidden" : "aspect-16/10 overflow-hidden"}>
           <img
             ref={imgRef}
             src={study.image}
-            alt={`${study.title} interface screenshot`}
+            alt={t(copy.caseStudy.imageAlt(study.title))}
             loading="lazy"
             className="h-[114%] w-full object-cover object-top"
           />
         </div>
       </a>
 
+      {study.mobileImages && study.mobileImages.length > 0 && (
+        <div className="mt-4 flex gap-4">
+          {study.mobileImages.map((shot) => (
+            <PhoneFrame
+              key={shot.alt}
+              src={shot.src}
+              alt={shot.alt}
+              className="w-28 shrink-0 sm:w-32 md:w-36"
+            />
+          ))}
+        </div>
+      )}
+
       {featured ? (
         <div className="mt-8 grid grid-cols-1 gap-x-10 gap-y-4 md:grid-cols-12">
           <div className="md:col-span-7">
             <Eyebrow rule={false} className="mb-3">
-              {study.tag}
+              {t(study.tag)}
             </Eyebrow>
             <h3 className="h1">{study.title}</h3>
           </div>
-          <p className="lede max-w-[52ch] md:col-span-5">{study.description}</p>
+          <p className="lede max-w-[52ch] md:col-span-5">{t(study.description)}</p>
         </div>
       ) : (
         <div className="mt-6 flex flex-col gap-2">
-          <Eyebrow rule={false}>{study.tag}</Eyebrow>
+          <Eyebrow rule={false}>{t(study.tag)}</Eyebrow>
           <h3 className="h2">{study.title}</h3>
-          <p className="lede max-w-[52ch]">{study.description}</p>
+          <p className="lede max-w-[52ch]">{t(study.description)}</p>
         </div>
       )}
 
@@ -85,10 +102,10 @@ export function CaseStudyCard({ study, featured = false }: CaseStudyCardProps) {
         href={study.href}
         target="_blank"
         rel="noopener noreferrer"
-        data-cursor="View live"
+        data-cursor={t(copy.cursor.viewLive)}
         className="eyebrow underline-draw mt-5 inline-flex"
       >
-        View live ↗
+        {t(copy.caseStudy.viewLive)}
       </a>
     </article>
   );
