@@ -39,16 +39,19 @@ const SECTION_ORDER: Record<Track, SectionKey[]> = {
 };
 
 /**
- * Featured Work case study order per track, by id. `caseStudies.ts` lists
- * Kitecast first (so `fullstack` can lead with it without an explicit
- * override), so `ai` needs its own explicit order to keep excluding Kitecast,
- * it must never render on the live default track. A renamed "Relational
- * Operations API (.NET)" case study is still pending and not yet in
- * content/caseStudies.ts; add its id to the `fullstack` array once it exists.
+ * Featured Work case study order per track, by id. `ai` has its own
+ * explicit order and must never pick up a project still being staged for
+ * `fullstack`. Kitecast's case study data stays in content/caseStudies.ts
+ * (real content, ready to go) but is deliberately left out of every order
+ * below while its repo is private, add "kitecast" back to `fullstack` once
+ * it's public. A renamed "Relational Operations API (.NET)" case study is
+ * still pending and not yet in content/caseStudies.ts; its id is reserved
+ * here so it silently starts rendering once that entry is added, no other
+ * change needed.
  */
 const FEATURED_WORK_ORDER: Partial<Record<Track, string[]>> = {
   ai: ["build-in-amsterdam", "zentry", "taxajurospro"],
-  fullstack: ["kitecast", "build-in-amsterdam", "zentry", "taxajurospro"],
+  fullstack: ["financehub", "relational-operations-api", "build-in-amsterdam"],
 };
 
 function App() {
@@ -65,7 +68,7 @@ function App() {
       <main>
         {order.map((key) => {
           if (key === "work") {
-            return <FeaturedWork key={key} order={featuredWorkOrder} />;
+            return <FeaturedWork key={key} order={featuredWorkOrder} uniform={track === "fullstack"} />;
           }
           const Section = SECTION_COMPONENTS[key];
           return <Section key={key} />;

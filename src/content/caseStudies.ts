@@ -7,10 +7,16 @@ export interface CaseStudy {
   description: Bilingual;
   stack: string[];
   href: string;
-  image: string;
+  /** Web screenshot. Omit for mobile-only projects that use `mobileHero` instead. */
+  image?: string;
+  /**
+   * Primary visual for mobile-only projects with no web screenshot: a large
+   * PhoneFrame (video or image) that replaces the `image` slot entirely.
+   */
+  mobileHero?: { type: "image" | "video"; src: string; poster?: string; alt: string };
   /**
    * Optional companion mobile app screenshots, each rendered inside a
-   * PhoneFrame beside/below the main `image`. Omit for web-only case
+   * smaller PhoneFrame beside/below the main visual. Omit for web-only case
    * studies (the default: nothing about them changes).
    */
   mobileImages?: { src: string; alt: string }[];
@@ -22,9 +28,13 @@ export interface CaseStudy {
 const asset = (path: string) => `${import.meta.env.BASE_URL}${path}`;
 
 /**
- * First entry renders as the large, wide card in FeaturedWork; the rest
- * stack in the narrower column. Order matters. `title` and `stack` are not
- * translated (a project name and its tech stack read the same in any
+ * This array's order is only the fallback (used when FeaturedWork gets no
+ * `order` prop, i.e. the `ai` track's own explicit order in App.tsx aside).
+ * Every other track passes an explicit `order`, which also acts as a
+ * filter, so an id listed here does not guarantee it renders anywhere (see
+ * `kitecast`, kept here with real content but currently excluded from every
+ * track's order until its repo is public again). `title` and `stack` are
+ * not translated (a project name and its tech stack read the same in any
  * language); `tag` and `description` are.
  */
 export const caseStudies: CaseStudy[] = [
@@ -42,6 +52,30 @@ export const caseStudies: CaseStudy[] = [
     mobileImages: [
       { src: asset("case-studies/kitecast-mobile-list.png"), alt: "Kitecast mobile app, spot list screen" },
       { src: asset("case-studies/kitecast-mobile-detail.png"), alt: "Kitecast mobile app, spot detail screen" },
+    ],
+  },
+  {
+    id: "financehub",
+    title: "FinanceHub",
+    tag: {
+      en: "React Native, Real-Time Data & Design System",
+      pt: "React Native, Dados em Tempo Real e Design System",
+    },
+    description: {
+      en: "FinanceHub is a production-ready React Native fintech application that delivers real-time cryptocurrency and foreign exchange market data through a modern, scalable architecture. Built with Expo, TypeScript, React Query and a reusable design system, the project demonstrates production-grade mobile engineering practices with a strong focus on performance, accessibility, and maintainable code.",
+      pt: "FinanceHub é um aplicativo fintech em React Native pronto para produção, entregando dados de mercado de criptomoedas e câmbio em tempo real através de uma arquitetura moderna e escalável. Construído com Expo, TypeScript, React Query e um design system reutilizável, o projeto demonstra práticas de engenharia mobile de nível de produção, com foco forte em performance, acessibilidade e código de fácil manutenção.",
+    },
+    stack: ["React Native", "Expo", "TypeScript", "React Query", "NativeWind"],
+    href: "https://github.com/dominiquekossi/FinanceHub",
+    mobileHero: {
+      type: "video",
+      src: asset("case-studies/financehub-home.mp4"),
+      poster: asset("case-studies/financehub-home-poster.jpg"),
+      alt: "FinanceHub app home screen, live market data scrolling",
+    },
+    mobileImages: [
+      { src: asset("case-studies/home1.PNG"), alt: "FinanceHub home screen, market pulse and top movers" },
+      { src: asset("case-studies/home2.PNG"), alt: "FinanceHub home screen, trending assets list" },
     ],
   },
   {

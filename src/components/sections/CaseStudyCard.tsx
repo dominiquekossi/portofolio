@@ -43,25 +43,53 @@ export function CaseStudyCard({ study, featured = false }: CaseStudyCardProps) {
       data-reveal
       className="group opacity-0 transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] hover:-translate-y-1.5"
     >
-      <a
-        href={study.href}
-        target="_blank"
-        rel="noopener noreferrer"
-        data-cursor={t(copy.cursor.viewLive)}
-        className="block border border-line bg-paper-deep p-2 transition-colors duration-500 group-hover:border-accent md:p-3"
-      >
-        <div className={featured ? "aspect-21/9 overflow-hidden" : "aspect-16/10 overflow-hidden"}>
-          <img
-            ref={imgRef}
-            src={study.image}
-            alt={t(copy.caseStudy.imageAlt(study.title))}
-            loading="lazy"
-            className="h-[114%] w-full object-cover object-top"
-          />
-        </div>
-      </a>
+      {study.image ? (
+        <a
+          href={study.href}
+          target="_blank"
+          rel="noopener noreferrer"
+          data-cursor={t(copy.cursor.viewLive)}
+          className="block border border-line bg-paper-deep p-2 transition-colors duration-500 group-hover:border-accent md:p-3"
+        >
+          <div className={featured ? "aspect-21/9 overflow-hidden" : "aspect-16/10 overflow-hidden"}>
+            <img
+              ref={imgRef}
+              src={study.image}
+              alt={t(copy.caseStudy.imageAlt(study.title))}
+              loading="lazy"
+              className="h-[114%] w-full object-cover object-top"
+            />
+          </div>
+        </a>
+      ) : (
+        study.mobileHero && (
+          <a
+            href={study.href}
+            target="_blank"
+            rel="noopener noreferrer"
+            data-cursor={t(copy.cursor.viewLive)}
+            className="flex items-end justify-center gap-4 border border-line bg-paper-deep p-4 transition-colors duration-500 group-hover:border-accent sm:justify-start"
+          >
+            <PhoneFrame
+              src={study.mobileHero.src}
+              poster={study.mobileHero.poster}
+              alt={t(copy.caseStudy.imageAlt(study.title))}
+              type={study.mobileHero.type}
+              reducedMotion={reducedMotion}
+              className="w-32 shrink-0 sm:w-36 md:w-40"
+            />
+            {study.mobileImages && study.mobileImages.length > 0 && (
+              <div className="flex gap-3">
+                {study.mobileImages.map((shot) => (
+                  <PhoneFrame key={shot.alt} src={shot.src} alt={shot.alt} className="w-20 shrink-0 sm:w-24 md:w-28" />
+                ))}
+              </div>
+            )}
+          </a>
+        )
+      )}
 
-      {study.mobileImages && study.mobileImages.length > 0 && (
+      {study.image && study.mobileImages && study.mobileImages.length > 0 && (
         <div className="mt-4 flex gap-4">
           {study.mobileImages.map((shot) => (
             <PhoneFrame

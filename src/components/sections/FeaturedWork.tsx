@@ -9,15 +9,22 @@ import { caseStudies } from "../../content/caseStudies";
 
 interface FeaturedWorkProps {
   /**
-   * Case study ids in display order, first is the featured (wide) slot.
-   * Also acts as a filter: ids not listed here simply don't render, so a
-   * track can show a curated subset. Omit to use every case study in the
-   * order defined in content/caseStudies.ts (the default, unchanged behavior).
+   * Case study ids in display order, first is the featured (wide) slot
+   * unless `uniform` is set. Also acts as a filter: ids not listed here
+   * simply don't render, so a track can show a curated subset. Omit to use
+   * every case study in the order defined in content/caseStudies.ts (the
+   * default, unchanged behavior).
    */
   order?: string[];
+  /**
+   * When true, every case study renders at the same (non-featured) size in
+   * the grid, first item included, no large wide slot. Use when the track's
+   * lead item shouldn't get outsized emphasis.
+   */
+  uniform?: boolean;
 }
 
-export function FeaturedWork({ order }: FeaturedWorkProps) {
+export function FeaturedWork({ order, uniform = false }: FeaturedWorkProps) {
   const rootRef = useRef<HTMLElement>(null);
   const reducedMotion = useReducedMotion();
   const { t } = useLanguage();
@@ -73,7 +80,8 @@ export function FeaturedWork({ order }: FeaturedWorkProps) {
         .map((id) => caseStudies.find((study) => study.id === id))
         .filter((study): study is (typeof caseStudies)[number] => study !== undefined)
     : caseStudies;
-  const [featured, ...rest] = orderedStudies;
+  const featured = uniform ? undefined : orderedStudies[0];
+  const rest = uniform ? orderedStudies : orderedStudies.slice(1);
 
   return (
     <section id="work" ref={rootRef} className="edge py-28 md:py-36">
@@ -88,7 +96,7 @@ export function FeaturedWork({ order }: FeaturedWorkProps) {
         </div>
 
         <div className="flex flex-col gap-16 md:gap-20">
-          <CaseStudyCard study={featured} featured />
+          {featured && <CaseStudyCard study={featured} featured />}
           <div className="grid grid-cols-1 gap-x-10 gap-y-16 sm:grid-cols-2">
             {rest.map((study) => (
               <CaseStudyCard key={study.id} study={study} />
