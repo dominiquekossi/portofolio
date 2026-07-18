@@ -13,7 +13,7 @@ const OCHRE_STEPS = [0.25, 0.45, 0.65, 0.85, 1];
 
 const STACK_GROUPS = [
   { label: "Backend", items: ["Node.js", ".NET / C#", "TypeScript", "REST APIs"] },
-  { label: "Frontend", items: ["React", "Next.js", "GSAP", "Three.js"] },
+  { label: "Frontend", items: ["React", "Next.js", "React Native", "GSAP", "Three.js"] },
 ];
 
 export function Hero() {
