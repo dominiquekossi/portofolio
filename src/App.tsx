@@ -51,7 +51,7 @@ const SECTION_ORDER: Record<Track, SectionKey[]> = {
  */
 const FEATURED_WORK_ORDER: Partial<Record<Track, string[]>> = {
   ai: ["build-in-amsterdam", "zentry", "taxajurospro"],
-  fullstack: ["financehub", "relational-operations-api", "build-in-amsterdam"],
+  fullstack: ["financehub", "relational-operations-api", "build-in-amsterdam", "zentry", "taxajurospro"],
 };
 
 function App() {

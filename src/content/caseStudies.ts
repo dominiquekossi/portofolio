@@ -79,6 +79,20 @@ export const caseStudies: CaseStudy[] = [
     ],
   },
   {
+    id: "relational-operations-api",
+    title: "Relational Operations API",
+    tag: {
+      en: ".NET 9, Entity Framework Core & Relational Modeling",
+      pt: ".NET 9, Entity Framework Core e Modelagem Relacional",
+    },
+    description: {
+      en: "A .NET 9 API built to demonstrate relational modeling in Entity Framework Core: one-to-one, one-to-many, and many-to-many relationships, each implemented with its own controller and a real, working schema (Users and Profiles, Blogs and Posts, Students and Courses with a join table). Migrations manage schema evolution end to end, from the initial model to an applied database update.",
+      pt: "Uma API em .NET 9 construída para demonstrar modelagem relacional no Entity Framework Core: relacionamentos um-para-um, um-para-muitos e muitos-para-muitos, cada um implementado com seu próprio controlador e um schema real e funcional (Usuários e Perfis, Blogs e Posts, Estudantes e Cursos com tabela intermediária). As migrations gerenciam a evolução do schema de ponta a ponta, do modelo inicial até a atualização aplicada no banco.",
+    },
+    stack: [".NET 9", "Entity Framework Core", "SQL Server"],
+    href: "https://github.com/dominiquekossi/Relational-Operations-API",
+  },
+  {
     id: "build-in-amsterdam",
     title: "Build in Amsterdam",
     tag: { en: "Pixel Fidelity", pt: "Fidelidade de Pixel" },
